@@ -1,12 +1,12 @@
-import copy
-import importlib.util
 import json
 from pathlib import Path
+import re
 import shutil
 import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+from urllib.parse import parse_qs, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -14,104 +14,150 @@ import rules
 import sync
 
 
-class RuleTests(unittest.TestCase):
-    def test_bad_downloads_and_unknown_formats_fail(self):
-        for text in ("<html>Service unavailable</html>", "", "# TOTAL: 2\nDOMAIN,one.example\n", "# TOTAL: 1\nRULE-SET,https://example.com\n"):
-            with self.subTest(text=text):
-                with self.assertRaises(ValueError):
-                    rules.parse(text, require_total=True)
+class NativeBaseTests(unittest.TestCase):
+    def stage(self, path):
+        root = Path(path)
+        for folder in ("upstream", "dist", "custom"):
+            shutil.copytree(ROOT / folder, root / folder)
+        for name in ("sources.json", "routing.json"):
+            shutil.copy(ROOT / name, root / name)
+        return root
 
-    def test_invalid_network_and_catchall_fail(self):
-        for text in ("IP-CIDR,10.1.1.1/8", "IP-CIDR,0.0.0.0/0", "DOMAIN-SUFFIX,*", "DOMAIN,x.com,DIRECT", "DOMAIN-SUFFIX,x.com/evil", "IP-CIDR6,1.1.1.1/32"):
-            with self.subTest(text=text), self.assertRaises(ValueError):
-                rules.parse(text)
+    def tree_bytes(self, root):
+        return {str(p.relative_to(root)): p.read_bytes() for p in root.rglob("*") if p.is_file()}
 
-    def test_domain_boundary_and_ipv6(self):
-        rows = [("DOMAIN-SUFFIX", "feishu.cn", "DIRECT"), ("IP-CIDR6", "2001:b28:f23c::/47", "PROXY")]
-        self.assertEqual(rules.match(rows, "open.feishu.cn"), "DIRECT")
-        self.assertIsNone(rules.match(rows, "notfeishu.cn"))
-        self.assertIsNone(rules.match(rows, "feishu.cn.evil.com"))
-        self.assertEqual(rules.match(rows, "2001:b28:f23d::1"), "PROXY")
+    def fake_upstream(self, changes=None):
+        cfg, contents, _ = rules.load_base()
+        contents.update(changes or {})
+        directories = {}
+        for s in cfg["files"]:
+            data = contents[s["path"]]
+            m = {"path": s["path"], "sha": rules.git_blob(data), "size": len(data), "type": "file"}
+            directories.setdefault(str(Path(s["path"]).parent), []).append(m)
+        def fetch(url, api=False):
+            if api:
+                path = urlsplit(url).path.split("/contents/", 1)[1]
+                return json.dumps(directories[path]).encode()
+            return contents[url.split("/" + "a" * 40 + "/", 1)[1]]
+        return fetch
 
-    def test_real_routes_and_generated_files(self):
+    def test_published_resources_are_byte_identical(self):
+        cfg, contents, report = rules.load_base()
         files = rules.build(check=True)
-        qx = files["quantumultx/rules.list"]
-        self.assertNotIn("no-resolve", qx)
-        self.assertIn("ip6-cidr,", qx)
-        self.assertTrue(qx.endswith("geoip,cn,direct\nfinal,proxy\n"))
-        self.assertNotIn("[MITM]", files["shadowrocket/personal-magic.conf"])
-        # Decode each target back to routing triples and check the same cases.
-        datasets = []
-        mapping = {"host": "DOMAIN", "host-suffix": "DOMAIN-SUFFIX", "ip-cidr": "IP-CIDR", "ip6-cidr": "IP-CIDR6"}
-        datasets.append([(mapping[p[0]], p[1], p[2].upper()) for l in qx.splitlines() if (p := l.split(","))[0] in mapping])
-        sr = files["shadowrocket/personal-magic.conf"].split("[Rule]\n")[1]
-        datasets.append([tuple(l.split(",")[:3]) for l in sr.splitlines() if l.startswith(tuple(rules.SUPPORTED))])
-        clash = files["clash/rules.yaml"]
-        datasets.append([tuple(json.loads(l[4:]).split(",")[:3]) for l in clash.splitlines() if l.startswith("  - ") and json.loads(l[4:]).split(",")[0] in rules.SUPPORTED])
-        providers = json.loads(files["clash/providers.yaml"])
-        decoded = []
-        for rule in providers["rules"]:
-            p = rule.split(",")
-            if p[0] != "RULE-SET":
-                continue
-            filename = providers["rule-providers"][p[1]]["url"].split("/dist/")[1]
-            decoded.extend((*json.loads(l[4:]).split(",")[:2], p[2]) for l in files[filename].splitlines() if l.startswith("  - "))
-        datasets.append(decoded)
-        for dataset in datasets:
-            for case in json.loads((ROOT / "tests/routes.json").read_text()):
-                self.assertEqual(rules.match(dataset, case["host"]), case["policy"], case["host"])
+        self.assertEqual(report["verified_files"], 37)
+        self.assertEqual(report["base_files"], 17)
+        for item in cfg["files"]:
+            if item["role"] == "base":
+                self.assertEqual(files[rules.output_path(item)], contents[item["path"]], item["path"])
+        self.assertNotIn("quantumultx/rules.list", files)
+        self.assertFalse(report["extensions_enabled"])
 
-    def test_snapshot_tampering_and_custom_conflict_fail(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            for folder in ("custom", "upstream", "tests"):
-                shutil.copytree(ROOT / folder, root / folder)
-            shutil.copy(ROOT / "sources.json", root / "sources.json")
-            p = root / "custom/proxy.list"
-            p.write_text(p.read_text() + "DOMAIN-SUFFIX,feishu.cn\n")
-            with self.assertRaisesRegex(ValueError, "conflict"):
-                rules.load_rules(root)
-            shutil.copy(ROOT / "custom/proxy.list", p)
-            with (root / "upstream/blackmatrix7/Global.list").open("a") as f:
-                f.write("DOMAIN-SUFFIX,tampered.example\n")
+    def test_native_keyword_asn_process_and_ipv6_are_retained(self):
+        files = rules.render()
+        self.assertIn(b"HOST-KEYWORD,openai,OpenAI", files["base/QuantumultX/OpenAI/OpenAI.list"])
+        self.assertIn(b"IP-ASN,20473,OpenAI", files["base/QuantumultX/OpenAI/OpenAI.list"])
+        self.assertIn(b"PROCESS-NAME,", files["base/Clash/Telegram/Telegram_No_Resolve.yaml"])
+        self.assertIn(b"IP-CIDR6,", files["base/Clash/Telegram/Telegram_No_Resolve.yaml"])
+
+    def test_all_native_files_are_bound_in_client_adapters(self):
+        cfg, _, _ = rules.load_base()
+        files = rules.render()
+        adapters = {"QuantumultX": files["quantumultx/base.conf"].decode(),
+                    "Shadowrocket": files["shadowrocket/personal-magic.conf"].decode(),
+                    "Clash": files["clash/providers.yaml"].decode()}
+        for item in cfg["files"]:
+            if item["role"] == "base":
+                self.assertIn(f"{rules.RAW}/{rules.output_path(item)}", adapters[item["client"]])
+        sr = adapters["Shadowrocket"]
+        for category in ("Global", "China"):
+            self.assertIn(f"DOMAIN-SET,{rules.RAW}/base/Shadowrocket/{category}/{category}_Domain.list,", sr)
+            self.assertIn(f"RULE-SET,{rules.RAW}/base/Shadowrocket/{category}/{category}.list,", sr)
+        link = re.search(r"\]\((https://quantumult.app/[^)]+)\)", files["quantumultx/import.md"].decode())[1]
+        resource = json.loads(parse_qs(urlsplit(link).query)["remote-resource"][0])
+        self.assertEqual(len(resource["filter_remote"]), 5)
+        self.assertEqual(sum("force-policy=proxy," in x for x in resource["filter_remote"]), 4)
+        self.assertIn("force-policy=direct,", resource["filter_remote"][-1])
+        clash = json.loads(files["clash/providers.yaml"])
+        self.assertEqual(len(clash["rule-providers"]), 5)
+        for category in cfg["categories"]:
+            url = clash["rule-providers"]["pm-" + category.lower()]["url"]
+            self.assertEqual(files["clash/" + category.lower() + ".yaml"], files[url.split("/dist/")[1]])
+
+    def test_custom_changes_cannot_affect_base_or_adapters(self):
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as tmp:
+            root = self.stage(tmp)
+            expected = rules.render(root)
+            for path in (root / "custom").iterdir():
+                if path.is_file():
+                    path.write_text("DOMAIN-SUFFIX,custom-only.example\nmalformed ignored extension draft\n")
+            self.assertEqual(expected, rules.render(root))
+            shutil.rmtree(root / "custom")
+            self.assertEqual(expected, rules.render(root))
+
+    def test_snapshot_and_output_tampering_fail(self):
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as tmp:
+            root = self.stage(tmp)
+            path = root / "dist/base/QuantumultX/OpenAI/OpenAI.list"
+            path.write_bytes(path.read_bytes() + b"# changed newline\r\n")
+            with self.assertRaisesRegex(ValueError, "stale generated file"):
+                rules.build(check=True, root=root)
+            path = rules.snapshot_path(root, "rule/QuantumultX/OpenAI/OpenAI.list")
+            path.write_bytes(path.read_bytes() + b"# changed\n")
             with self.assertRaisesRegex(ValueError, "locked Git blob"):
-                rules.load_rules(root)
+                rules.render(root)
 
-    def test_upstream_batch_failure_leaves_snapshots_untouched(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            for folder in ("custom", "upstream", "tests"):
-                shutil.copytree(ROOT / folder, root / folder)
-            shutil.copy(ROOT / "sources.json", root / "sources.json")
-            before = {p: p.read_bytes() for p in (root / "upstream").rglob("*") if p.is_file()}
-            # First download is valid, second fails: even the first must not be installed.
-            responses = [json.dumps({"object": {"sha": "a" * 40}}).encode(),
-                         (root / "upstream/blackmatrix7/OpenAI.list").read_bytes(),
-                         b"<html>upstream failure</html>"]
-            with patch.object(sync, "ROOT", root), patch.object(sync, "fetch", side_effect=responses):
-                with self.assertRaises(ValueError):
-                    sync.main()
-            self.assertEqual(before, {p: p.read_bytes() for p in before})
-            self.assertFalse((root / ".update-report.md").exists())
+    def test_failed_batch_keeps_all_tracked_files_unchanged(self):
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as tmp:
+            root = self.stage(tmp)
+            before = self.tree_bytes(root)
+            valid_fetch = self.fake_upstream()
+            def broken_fetch(url, api=False):
+                if not api and url.endswith("/China.list"):
+                    return b"<html>download failed</html>"
+                return valid_fetch(url, api)
+            with patch.object(sync, "fetch", side_effect=broken_fetch):
+                with self.assertRaisesRegex(ValueError, "differs from upstream Git blob"):
+                    sync.main("a" * 40, root)
+            self.assertEqual(before, self.tree_bytes(root))
 
-    def test_large_upstream_deletion_is_rejected(self):
-        text = (ROOT / "upstream/blackmatrix7/OpenAI.list").read_text()
-        lines = text.splitlines()
-        cfg = json.loads((ROOT / "sources.json").read_text())
-        accepted, _ = rules.parse(text, cfg["skip_types"], require_total=True)
-        remove_count = len(accepted) // 3 + 1
-        removed = 0
-        kept = []
-        for line in lines:
-            if line.split(",")[0] in rules.SUPPORTED and removed < remove_count:
-                removed += 1
-            else:
-                kept.append(line)
-        kept = [f"# TOTAL: {int(line.split(':')[1]) - removed}" if line.startswith("# TOTAL:") else line for line in kept]
-        responses = [json.dumps({"object": {"sha": "b" * 40}}).encode(), ("\n".join(kept) + "\n").encode()]
-        with patch.object(sync, "fetch", side_effect=responses):
-            with self.assertRaisesRegex(ValueError, "unusually large change"):
-                sync.main()
+    def test_valid_update_preserves_remote_bytes_including_crlf(self):
+        path = "rule/QuantumultX/OpenAI/OpenAI.list"
+        data = rules.snapshot_path(ROOT, path).read_bytes() + b"# upstream annotation\r\n"
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as tmp:
+            root = self.stage(tmp)
+            with patch.object(sync, "fetch", side_effect=self.fake_upstream({path: data})):
+                sync.main("a" * 40, root)
+            self.assertEqual(rules.snapshot_path(root, path).read_bytes(), data)
+            self.assertEqual((root / "dist/base/QuantumultX/OpenAI/OpenAI.list").read_bytes(), data)
+            self.assertEqual(json.loads((root / "upstream/lock.json").read_text())["commit"], "a" * 40)
+            rules.build(check=True, root=root)
+
+    def test_large_deletion_is_rejected_without_mutation(self):
+        path = "rule/QuantumultX/OpenAI/OpenAI.list"
+        lines = rules.snapshot_path(ROOT, path).read_bytes().splitlines(keepends=True)
+        data = b"".join(x for i, x in enumerate(lines) if x.startswith(b"#") or i % 2)
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as tmp:
+            root = self.stage(tmp)
+            before = self.tree_bytes(root)
+            with patch.object(sync, "fetch", side_effect=self.fake_upstream({path: data})):
+                with self.assertRaisesRegex(ValueError, "unusually large change"):
+                    sync.main("a" * 40, root)
+            self.assertEqual(before, self.tree_bytes(root))
+
+    def test_missing_shadowrocket_companion_is_rejected(self):
+        with tempfile.TemporaryDirectory(dir=ROOT.parent) as tmp:
+            root = self.stage(tmp)
+            path = "rule/Shadowrocket/Global/Global_Domain.list"
+            cfg = json.loads((root / "sources.json").read_text())
+            cfg["files"] = [x for x in cfg["files"] if x["path"] != path]
+            with patch.object(sync, "fetch", side_effect=self.fake_upstream()):
+                with self.assertRaisesRegex(ValueError, "companion domain set"):
+                    sync.metadata(cfg, "a" * 40)
+
+    def test_no_scheduled_upstream_updates(self):
+        workflow = (ROOT / ".github/workflows/sync.yml").read_text()
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertNotRegex(workflow, r"(?m)^\s*(schedule:|-\s*cron:)")
 
 
 if __name__ == "__main__":
