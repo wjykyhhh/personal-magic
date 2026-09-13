@@ -1,67 +1,145 @@
 {
+  "mode": "native-upstream-base",
+  "scope": "selected categories, not entire upstream repository",
+  "categories": [
+    "OpenAI",
+    "Twitter",
+    "Telegram",
+    "Global",
+    "China"
+  ],
   "upstream_commit": "0087bb74e91b335e17a79fd07a8514277f7d77b4",
-  "sources": {
-    "OpenAI": {
-      "accepted": 33,
-      "skipped": {
-        "DOMAIN-KEYWORD": 1,
-        "IP-ASN": 1
-      },
-      "excluded": 0
+  "extensions_enabled": false,
+  "transformed_rules": 0,
+  "files": {
+    "rule/QuantumultX/OpenAI/OpenAI.list": {
+      "git_blob_sha": "2328cec46e4fc91b487e0b51d27a03c95f141e1d",
+      "bytes": 1495,
+      "entries": 35,
+      "output": "dist/base/QuantumultX/OpenAI/OpenAI.list"
     },
-    "Twitter": {
-      "accepted": 32,
-      "skipped": {
-        "DOMAIN-KEYWORD": 1
-      },
-      "excluded": 0
+    "rule/QuantumultX/Twitter/Twitter.list": {
+      "git_blob_sha": "4b678f4434a1fe5d20a054b83c9dcd455cdad757",
+      "bytes": 1256,
+      "entries": 33,
+      "output": "dist/base/QuantumultX/Twitter/Twitter.list"
     },
-    "Telegram": {
-      "accepted": 34,
-      "skipped": {
-        "DOMAIN-KEYWORD": 1,
-        "PROCESS-NAME": 6,
-        "IP-ASN": 5
-      },
-      "excluded": 0
+    "rule/QuantumultX/Telegram/Telegram.list": {
+      "git_blob_sha": "f359275291d632317f11337933a000af4905db56",
+      "bytes": 1494,
+      "entries": 40,
+      "output": "dist/base/QuantumultX/Telegram/Telegram.list"
     },
-    "Global": {
-      "accepted": 35007,
-      "skipped": {
-        "DOMAIN-KEYWORD": 36,
-        "PROCESS-NAME": 1
-      },
-      "excluded": 0
+    "rule/QuantumultX/Global/Global.list": {
+      "git_blob_sha": "550efdb6b1dcd826f5fce90312c7638c68b164f5",
+      "bytes": 1209963,
+      "entries": 35781,
+      "output": "dist/base/QuantumultX/Global/Global.list"
     },
-    "China": {
-      "accepted": 3712,
-      "skipped": {
-        "DOMAIN-KEYWORD": 9
-      },
-      "excluded": 0
+    "rule/QuantumultX/China/China.list": {
+      "git_blob_sha": "49cf7fabd82867eacb59692a41f5e53caa9de85a",
+      "bytes": 115682,
+      "entries": 3753,
+      "output": "dist/base/QuantumultX/China/China.list"
+    },
+    "rule/Shadowrocket/OpenAI/OpenAI.list": {
+      "git_blob_sha": "506c9ec94dad225df23c05a50294d2c440c94dd3",
+      "bytes": 1353,
+      "entries": 35,
+      "output": "dist/base/Shadowrocket/OpenAI/OpenAI.list"
+    },
+    "rule/Shadowrocket/Twitter/Twitter.list": {
+      "git_blob_sha": "666db47acb004f886983ca3434c13709b9e1f242",
+      "bytes": 1116,
+      "entries": 33,
+      "output": "dist/base/Shadowrocket/Twitter/Twitter.list"
+    },
+    "rule/Shadowrocket/Telegram/Telegram.list": {
+      "git_blob_sha": "b49ba02912593715dec2ba3645f3ecdeba8ae964",
+      "bytes": 1338,
+      "entries": 40,
+      "output": "dist/base/Shadowrocket/Telegram/Telegram.list"
+    },
+    "rule/Shadowrocket/Global/Global.list": {
+      "git_blob_sha": "2757ce82763eb5e793d3c5b4986f072164eeb763",
+      "bytes": 6097,
+      "entries": 198,
+      "output": "dist/base/Shadowrocket/Global/Global.list"
+    },
+    "rule/Shadowrocket/Global/Global_Domain.list": {
+      "git_blob_sha": "c52e3ce83e6a6cf59e18d6443dc498cdccbaee1e",
+      "bytes": 549977,
+      "entries": 34891,
+      "output": "dist/base/Shadowrocket/Global/Global_Domain.list"
+    },
+    "rule/Shadowrocket/China/China.list": {
+      "git_blob_sha": "812ff3bd97c905b19b81668fea8dee29c911e180",
+      "bytes": 2038,
+      "entries": 63,
+      "output": "dist/base/Shadowrocket/China/China.list"
+    },
+    "rule/Shadowrocket/China/China_Domain.list": {
+      "git_blob_sha": "2353a7abdac6c3374a90049f4dd38352668f0c64",
+      "bytes": 51067,
+      "entries": 3689,
+      "output": "dist/base/Shadowrocket/China/China_Domain.list"
+    },
+    "rule/Clash/OpenAI/OpenAI_No_Resolve.yaml": {
+      "git_blob_sha": "5d1236861c57fdc3c5206c02b9a1b8d904c51dc7",
+      "bytes": 1502,
+      "entries": 35,
+      "output": "dist/base/Clash/OpenAI/OpenAI_No_Resolve.yaml"
+    },
+    "rule/Clash/Twitter/Twitter_No_Resolve.yaml": {
+      "git_blob_sha": "855c32afb98deac1487e5442bf4e716899fee6d6",
+      "bytes": 1257,
+      "entries": 33,
+      "output": "dist/base/Clash/Twitter/Twitter_No_Resolve.yaml"
+    },
+    "rule/Clash/Telegram/Telegram_No_Resolve.yaml": {
+      "git_blob_sha": "e3364a490a5d31f8738b51109c2242482a563a4a",
+      "bytes": 1755,
+      "entries": 46,
+      "output": "dist/base/Clash/Telegram/Telegram_No_Resolve.yaml"
+    },
+    "rule/Clash/Global/Global_Classical_No_Resolve.yaml": {
+      "git_blob_sha": "c8858c942bc725390ee2d30fc27fb553a0814ade",
+      "bytes": 1147893,
+      "entries": 35044,
+      "output": "dist/base/Clash/Global/Global_Classical_No_Resolve.yaml"
+    },
+    "rule/Clash/China/China_Classical_No_Resolve.yaml": {
+      "git_blob_sha": "3db7076af80736789b5e2dafe7cac54a85b2fe69",
+      "bytes": 114789,
+      "entries": 3721,
+      "output": "dist/base/Clash/China/China_Classical_No_Resolve.yaml"
     }
   },
-  "overrides": [
-    {
-      "rule": "IP-CIDR,101.32.118.0/23",
-      "kept": "PROXY",
-      "ignored": "DIRECT",
-      "source": "china"
+  "rules_sha256": "0fa75472484f70571edc589f9230b3934732fee7b061336e04b385b209a38bdb",
+  "verified_files": 37,
+  "base_files": 17,
+  "adapter_policies": {
+    "category_order": [
+      "OpenAI",
+      "Twitter",
+      "Telegram",
+      "Global",
+      "China"
+    ],
+    "policies": {
+      "OpenAI": "PROXY",
+      "Twitter": "PROXY",
+      "Telegram": "PROXY",
+      "Global": "PROXY",
+      "China": "DIRECT"
     },
-    {
-      "rule": "IP-CIDR,101.32.96.0/20",
-      "kept": "PROXY",
-      "ignored": "DIRECT",
-      "source": "china"
-    },
-    {
-      "rule": "IP-CIDR,129.226.0.0/16",
-      "kept": "PROXY",
-      "ignored": "DIRECT",
-      "source": "china"
-    }
-  ],
-  "total_rules": 38774,
-  "route_checks": 53,
-  "rules_sha256": "0d1d6ef653dd45c847cb42197369a8f489e18c8eb8c55ad5a57c5ef91c946830"
+    "geoip_cn": "DIRECT",
+    "final": "PROXY"
+  },
+  "retired_urls": [
+    "dist/quantumultx/rules.list",
+    "dist/clash/lan.yaml",
+    "dist/clash/custom-direct.yaml",
+    "dist/clash/custom-proxy.yaml"
+  ]
 }

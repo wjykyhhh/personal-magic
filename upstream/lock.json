@@ -1,26 +1,155 @@
 {
+  "schema_version": 2,
   "repository": "blackmatrix7/ios_rule_script",
   "commit": "0087bb74e91b335e17a79fd07a8514277f7d77b4",
   "files": {
-    "OpenAI": {
-      "path": "rule/Clash/OpenAI/OpenAI.list",
-      "git_blob_sha": "506c9ec94dad225df23c05a50294d2c440c94dd3"
+    "rule/QuantumultX/OpenAI/OpenAI.list": {
+      "git_blob_sha": "2328cec46e4fc91b487e0b51d27a03c95f141e1d",
+      "size": 1495
     },
-    "Twitter": {
-      "path": "rule/Clash/Twitter/Twitter.list",
-      "git_blob_sha": "666db47acb004f886983ca3434c13709b9e1f242"
+    "rule/QuantumultX/OpenAI/README.md": {
+      "git_blob_sha": "1139fc275e1b6d7cb1b7cff0f8bfe93e0e6f8ce9",
+      "size": 2711
     },
-    "Telegram": {
-      "path": "rule/Clash/Telegram/Telegram.list",
-      "git_blob_sha": "d02438efbaa8f6e10cb84361dc4eb63f9b21ae31"
+    "rule/QuantumultX/Twitter/README.md": {
+      "git_blob_sha": "0f9e0c184f025aa70291d7dcb79460a060306a0e",
+      "size": 3088
     },
-    "Global": {
-      "path": "rule/Clash/Global/Global.list",
-      "git_blob_sha": "7ca69900c701fef9ec14136f403cb829fb77d3d8"
+    "rule/QuantumultX/Twitter/Twitter.list": {
+      "git_blob_sha": "4b678f4434a1fe5d20a054b83c9dcd455cdad757",
+      "size": 1256
     },
-    "China": {
-      "path": "rule/Clash/China/China.list",
-      "git_blob_sha": "d1782d07444333936a01f07462e232310a34691c"
+    "rule/QuantumultX/Telegram/README.md": {
+      "git_blob_sha": "8c61571a6877ebb2f5c66594b739697f73d24f9b",
+      "size": 3789
+    },
+    "rule/QuantumultX/Telegram/Telegram.list": {
+      "git_blob_sha": "f359275291d632317f11337933a000af4905db56",
+      "size": 1494
+    },
+    "rule/QuantumultX/Global/Global.list": {
+      "git_blob_sha": "550efdb6b1dcd826f5fce90312c7638c68b164f5",
+      "size": 1209963
+    },
+    "rule/QuantumultX/Global/README.md": {
+      "git_blob_sha": "c0cc9df70ac5f3ebf765b3f800e2d6baadc30eb2",
+      "size": 4221
+    },
+    "rule/QuantumultX/China/China.list": {
+      "git_blob_sha": "49cf7fabd82867eacb59692a41f5e53caa9de85a",
+      "size": 115682
+    },
+    "rule/QuantumultX/China/README.md": {
+      "git_blob_sha": "3686d2b5bb4702b0bfb1b5466af0ed4f04b33998",
+      "size": 3299
+    },
+    "rule/Shadowrocket/OpenAI/OpenAI.list": {
+      "git_blob_sha": "506c9ec94dad225df23c05a50294d2c440c94dd3",
+      "size": 1353
+    },
+    "rule/Shadowrocket/OpenAI/README.md": {
+      "git_blob_sha": "51f3da94110e8eb85103860a98d5745d1a1cc81f",
+      "size": 2974
+    },
+    "rule/Shadowrocket/Twitter/README.md": {
+      "git_blob_sha": "ed9f629d4782a7172435f4cee9a7895d21a52bad",
+      "size": 3431
+    },
+    "rule/Shadowrocket/Twitter/Twitter.list": {
+      "git_blob_sha": "666db47acb004f886983ca3434c13709b9e1f242",
+      "size": 1116
+    },
+    "rule/Shadowrocket/Telegram/README.md": {
+      "git_blob_sha": "817e05094c829fd52e31678d3a4617ec387b1a62",
+      "size": 4121
+    },
+    "rule/Shadowrocket/Telegram/Telegram.list": {
+      "git_blob_sha": "b49ba02912593715dec2ba3645f3ecdeba8ae964",
+      "size": 1338
+    },
+    "rule/Shadowrocket/Global/Global.list": {
+      "git_blob_sha": "2757ce82763eb5e793d3c5b4986f072164eeb763",
+      "size": 6097
+    },
+    "rule/Shadowrocket/Global/Global_Domain.list": {
+      "git_blob_sha": "c52e3ce83e6a6cf59e18d6443dc498cdccbaee1e",
+      "size": 549977
+    },
+    "rule/Shadowrocket/Global/README.md": {
+      "git_blob_sha": "347974629107ab991eddee47bcd0fcbe7973ff35",
+      "size": 4630
+    },
+    "rule/Shadowrocket/China/China.list": {
+      "git_blob_sha": "812ff3bd97c905b19b81668fea8dee29c911e180",
+      "size": 2038
+    },
+    "rule/Shadowrocket/China/China_Domain.list": {
+      "git_blob_sha": "2353a7abdac6c3374a90049f4dd38352668f0c64",
+      "size": 51067
+    },
+    "rule/Shadowrocket/China/README.md": {
+      "git_blob_sha": "4add97cc39247975882492c4f495a6fcaa1897b0",
+      "size": 3599
+    },
+    "rule/Clash/OpenAI/OpenAI.list": {
+      "git_blob_sha": "506c9ec94dad225df23c05a50294d2c440c94dd3",
+      "size": 1353
+    },
+    "rule/Clash/OpenAI/OpenAI_No_Resolve.yaml": {
+      "git_blob_sha": "5d1236861c57fdc3c5206c02b9a1b8d904c51dc7",
+      "size": 1502
+    },
+    "rule/Clash/OpenAI/README.md": {
+      "git_blob_sha": "422e5f907791c1fddb7e615fb84e37fc25911d00",
+      "size": 2842
+    },
+    "rule/Clash/Twitter/README.md": {
+      "git_blob_sha": "574aaea6559e4d649747967da21e1267e67ada71",
+      "size": 3297
+    },
+    "rule/Clash/Twitter/Twitter.list": {
+      "git_blob_sha": "666db47acb004f886983ca3434c13709b9e1f242",
+      "size": 1116
+    },
+    "rule/Clash/Twitter/Twitter_No_Resolve.yaml": {
+      "git_blob_sha": "855c32afb98deac1487e5442bf4e716899fee6d6",
+      "size": 1257
+    },
+    "rule/Clash/Telegram/README.md": {
+      "git_blob_sha": "3ab84e88d8280e573b1e820bc8008bba0ba95021",
+      "size": 4026
+    },
+    "rule/Clash/Telegram/Telegram.list": {
+      "git_blob_sha": "d02438efbaa8f6e10cb84361dc4eb63f9b21ae31",
+      "size": 1562
+    },
+    "rule/Clash/Telegram/Telegram_No_Resolve.yaml": {
+      "git_blob_sha": "e3364a490a5d31f8738b51109c2242482a563a4a",
+      "size": 1755
+    },
+    "rule/Clash/Global/Global.list": {
+      "git_blob_sha": "7ca69900c701fef9ec14136f403cb829fb77d3d8",
+      "size": 1007708
+    },
+    "rule/Clash/Global/Global_Classical_No_Resolve.yaml": {
+      "git_blob_sha": "c8858c942bc725390ee2d30fc27fb553a0814ade",
+      "size": 1147893
+    },
+    "rule/Clash/Global/README.md": {
+      "git_blob_sha": "42f8081f0034435ffcef693b551ecee627194dcf",
+      "size": 5998
+    },
+    "rule/Clash/China/China.list": {
+      "git_blob_sha": "d1782d07444333936a01f07462e232310a34691c",
+      "size": 99896
+    },
+    "rule/Clash/China/China_Classical_No_Resolve.yaml": {
+      "git_blob_sha": "3db7076af80736789b5e2dafe7cac54a85b2fe69",
+      "size": 114789
+    },
+    "rule/Clash/China/README.md": {
+      "git_blob_sha": "6977cc3b3b8a06f9ff1b149e0b0ade143340dfef",
+      "size": 4920
     }
   }
 }

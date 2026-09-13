@@ -1,74 +1,47 @@
 {
   "rule-providers": {
-    "pm-lan": {
-      "type": "http",
-      "behavior": "classical",
-      "format": "yaml",
-      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/lan.yaml",
-      "path": "./ruleset/personal-magic/lan.yaml",
-      "interval": 86400
-    },
-    "pm-custom-direct": {
-      "type": "http",
-      "behavior": "classical",
-      "format": "yaml",
-      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/custom-direct.yaml",
-      "path": "./ruleset/personal-magic/custom-direct.yaml",
-      "interval": 86400
-    },
-    "pm-custom-proxy": {
-      "type": "http",
-      "behavior": "classical",
-      "format": "yaml",
-      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/custom-proxy.yaml",
-      "path": "./ruleset/personal-magic/custom-proxy.yaml",
-      "interval": 86400
-    },
     "pm-openai": {
       "type": "http",
       "behavior": "classical",
       "format": "yaml",
-      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/openai.yaml",
-      "path": "./ruleset/personal-magic/openai.yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/base/Clash/OpenAI/OpenAI_No_Resolve.yaml",
+      "path": "./ruleset/personal-magic/base/OpenAI.yaml",
       "interval": 86400
     },
     "pm-twitter": {
       "type": "http",
       "behavior": "classical",
       "format": "yaml",
-      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/twitter.yaml",
-      "path": "./ruleset/personal-magic/twitter.yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/base/Clash/Twitter/Twitter_No_Resolve.yaml",
+      "path": "./ruleset/personal-magic/base/Twitter.yaml",
       "interval": 86400
     },
     "pm-telegram": {
       "type": "http",
       "behavior": "classical",
       "format": "yaml",
-      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/telegram.yaml",
-      "path": "./ruleset/personal-magic/telegram.yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/base/Clash/Telegram/Telegram_No_Resolve.yaml",
+      "path": "./ruleset/personal-magic/base/Telegram.yaml",
       "interval": 86400
     },
     "pm-global": {
       "type": "http",
       "behavior": "classical",
       "format": "yaml",
-      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/global.yaml",
-      "path": "./ruleset/personal-magic/global.yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/base/Clash/Global/Global_Classical_No_Resolve.yaml",
+      "path": "./ruleset/personal-magic/base/Global.yaml",
       "interval": 86400
     },
     "pm-china": {
       "type": "http",
       "behavior": "classical",
       "format": "yaml",
-      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/china.yaml",
-      "path": "./ruleset/personal-magic/china.yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/base/Clash/China/China_Classical_No_Resolve.yaml",
+      "path": "./ruleset/personal-magic/base/China.yaml",
       "interval": 86400
     }
   },
   "rules": [
-    "RULE-SET,pm-lan,DIRECT",
-    "RULE-SET,pm-custom-direct,DIRECT",
-    "RULE-SET,pm-custom-proxy,PROXY",
     "RULE-SET,pm-openai,PROXY",
     "RULE-SET,pm-twitter,PROXY",
     "RULE-SET,pm-telegram,PROXY",

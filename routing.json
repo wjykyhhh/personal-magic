@@ -1,0 +1,12 @@
+{
+  "category_order": ["OpenAI", "Twitter", "Telegram", "Global", "China"],
+  "policies": {
+    "OpenAI": "PROXY",
+    "Twitter": "PROXY",
+    "Telegram": "PROXY",
+    "Global": "PROXY",
+    "China": "DIRECT"
+  },
+  "geoip_cn": "DIRECT",
+  "final": "PROXY"
+}

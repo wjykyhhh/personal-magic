@@ -1,51 +1,53 @@
 # 维护、试用与回退
 
-## 两个分支
+## 基础与扩展
 
-- `main`：规则源、手动发起的更新候选合并后的试用版本。
-- `stable`：日常订阅。只有发布操作才会更新；main 的 PR 合并不会改动它。
+`sources.json` 精确列出五组分类使用的客户端原生文件，以及配套 README/参考文件。`upstream/lock.json` 固定同一个上游 commit 和每个文件的 Git blob/大小。`scripts/rules.py` 对字节进行验证并原样复制到 `dist/base/`，只生成外围接入配置，不解析转换规则内容。
 
-首版经过离线校验后初始化 stable，尚未代替使用者进行手机实测。之后在发布工作流中确认已试用。
+请勿手工编辑原版快照来补域名。`custom/` 是独立草稿区，目前构建不读取它。未来扩展应独立输出、独立启用，并为具体请求记录来源、预期策略和实际验证结果。修改扩展不得改变基础文件的校验值。
 
-## 修改自己的规则
+`routing.json` 管理类别引用顺序及策略绑定。它属于我们的接入配置，不能被描述为上游原作者规定的唯一顺序。QX/Shadowrocket/Clash 各自的原生内容和能力不同，逐字节一致指与各自上游文件一致，不表示三端完全相同。
 
-修改 `custom/direct.list` 或 `custom/proxy.list`，格式是 `DOMAIN-SUFFIX,example.com` 或 `DOMAIN,api.example.com`，不填写策略。自定义文件不由上游同步程序覆盖。
+## 手动更新上游
 
-`exclude.list` 排除的是标准化后完全相同的上游规则；若想将上游代理域名改为直连，通常直接写进 `direct.list` 更清楚。自定义直连优先于自定义代理，嵌套域名的冲突应主动调整；例如把整个 `example.com` 直连后，再把 `api.example.com` 放进代理文件，会被前面的直连覆盖。
+没有 `schedule`/cron。Actions → **Propose upstream update** → Run workflow，或执行：
 
-运行编译和测试后提交源文件与 dist。GitHub Check rules 会检查是否遗漏重新生成。
+```sh
+python3 scripts/sync.py
+```
 
-## 上游更新
+需要选择特定上游版本时，使用 `python3 scripts/sync.py --commit <完整40位上游SHA>`。脚本从同一固定提交读取文件清单和原文，逐个验证 Git blob/大小；新出现的 Shadowrocket 配套域名文件会要求先更新来源清单，避免只取一半规则。
 
-Actions → **Propose upstream update** → Run workflow，按需手动检查。也可以在本地运行 `python3 scripts/sync.py`。已移除定时触发，不会每天自动检查上游。所有选中分类使用同一个上游 commit，下载到临时目录，全部通过校验才写入候选文件。
+所有下载及完整构建在临时目录验证后，才替换工作区的 upstream/dist；失败时保留已有版本。任一规则文件条目增删超过 20% 会中止，不会通过删规则来凑阈值。确认上游变化合理后，单独审查并调整阈值，再运行更新。
 
-若无变更，不提交。若有合格变更，创建 `automation/upstream-…` 分支及 PR；PR 描述列出增删数。20% 异常变更阈值、数量下限、格式错误或关键规则回归会中止流程，不改 stable。超过阈值时需阅读差异，确认合理后再手动更新快照或调整阈值；不要为消除报错直接关闭检查。
-
-GitHub 如果提示 Actions 无法创建 PR，在仓库 Settings → Actions → General → Workflow permissions 中允许 GitHub Actions 创建 PR。候选分支仍会保留，日志提供比较链接，可自行开 PR。自动创建的 PR 可能不会触发另一个 PR 工作流，但同步作业本身已运行测试，发布作业还会再验证。
-
-手动发起更新不会直接改动 stable。客户端刷新订阅只会获取已发布版本，也不会触发上游同步。
+Actions 仅推送候选分支并开 PR，不直接发布 stable。脚本不会覆盖 custom。PR 描述给出各文件条目增删数；空行、注释、格式变化仍会原样保存。
 
 ## 试用与发布
 
-1. 审查更新 PR，合并到 main。更新前可记录 stable 当前 commit，作为立即回退地址。
-2. 测试设备临时把订阅 URL 中的 `stable` 替换成待发布的 main commit SHA，避免试用过程中版本漂移。QX 停用旧资源后测试新资源；Shadowrocket 下载为另一个配置；Clash 同批规则集固定为相同 commit。
-3. 实测 X 图片/视频、Telegram 媒体、AI 登录/上传、飞书文档/通话及自己的银行 App，结合连接日志确认命中路径。
-4. Actions → **Publish stable** → Run workflow，工作流分支选择 main。可填写 main 上已试用的完整 40 位 commit SHA，勾选已审核/试用后运行。留空使用运行时检出的最新 main，请避免误发未试用的新提交。
-5. 发布作业重新编译校验并运行测试，然后一次移动 stable 引用。记录 `PUBLISHED.json` 和版本标签。各客户端需刷新订阅/配置，GitHub Raw 与客户端缓存可能延后生效。
+`main` 是编辑/审核版本，`stable` 是日常订阅。合并 main 不会自动发布。
 
-发布程序只允许 main 历史中的 source commit，stable 更新不使用 force push。自动化流程是约定的发布路径，并未配置 GitHub 分支保护；拥有仓库写权限的人仍能手动修改 stable。
+1. 审查 diff，运行 `python3 scripts/rules.py check` 和 `python3 -m unittest discover -s tests -v`。
+2. 试用时，将接入配置里的**所有** personal-magic 资源 URL 的 `stable` 替换为同一个 main commit SHA。只替换外层配置 URL 不会修改其内部链接；QX 五组、Shadowrocket 七个资源、Clash 五个 provider 都要固定。
+3. 在手机/目标客户端检查资源加载成功、实际命中策略，并试用 X/TG 媒体、AI 登录/上传、飞书及自己的银行 App。离线字节验证不能代表联网成功。
+4. Actions → **Publish stable** → Run workflow，分支选 main。填写审核/试用过的完整 main commit SHA，勾选试用确认；留空使用作业检出的 main。
+5. 发布脚本重新校验并运行测试，再追加一个 stable 提交，记录 `PUBLISHED.json` 和版本标签。客户端同批刷新配置及全部远程规则集。
 
-## 回退
+发布程序不 force push。原始文件精确匹配 `upstream/lock.json`，并不表示永远跟随上游最新 master。客户端缓存也可能暂时保留上次内容。
 
-立即回退某个客户端：将订阅 URL 中的 `stable` 替换为之前可用的已发布 commit SHA，刷新订阅；同一个版本的多个 Clash 规则集应一起固定。
+通过连接器人工发布时，同样先校验完整本地树和文件哈希，记录来源提交、上游提交、前一版 stable 及验证范围；不得将未进行的云端或设备测试写成通过。
 
-回退所有跟随 stable 的客户端：在 stable 历史或对应 `PUBLISHED.json` 找到之前版本的 `source_commit`，运行 Publish stable 并填写该值。会追加一个恢复旧内容的新提交，不删除历史。首版若没有 PUBLISHED.json，使用初始化 main 的规则提交 SHA。
+## 旧版迁移与回退
 
-## 排查“网页能开，图片不行”
+旧 QX 混合资源 `dist/quantumultx/rules.list` 已撤下。停用旧资源，按 [新导入说明](../dist/quantumultx/import.md) 添加五组原生资源并配置策略、兜底；一键添加只增加远程资源。旧版“不要设置 force-policy”的说明已不适用。
 
-在 QX/Shadowrocket 的连接记录中找到失败的图片请求，记录域名、命中规则、最终策略及节点，区分以下情况：
+Shadowrocket 保留配置 URL，需要更新配置并刷新其远程资源。Clash 更新 `rule-providers` 和 `rules` 整个片段；旧 custom/lan provider 已撤下。
 
-- 命中旧配置/旧资源：检查当前启用配置、本地规则和重复分流资源。
-- 命中直连但应代理：补入 custom/proxy，并添加 tests/routes.json 的预期用例。
-- 已命中代理仍失败：换可用节点试验，检查 DNS、出口地区和 UDP；规则本身不能修复节点。
-- 银行/飞书仍异常：确认实际请求域名，按需增加精确直连域名，避免把公共云/CDN整网改为直连。
+立即回退设备：将全部资源 URL 固定到以前可用的同一个已发布 commit SHA。也可下载该提交的旧版配置。旧版本的文件和原混合订阅仍在 Git 历史中。
+
+回退所有 stable 订阅：从过去的 `PUBLISHED.json` 取 `source_commit`，使用 Publish stable 发布它，会追加恢复旧内容的提交，不删除历史。不同版本的 QX 资源结构可能不同，回退跨越这次迁移时需同步恢复旧资源设置。
+
+## 排查规则问题
+
+从客户端连接记录中找到失败请求的实际域名/IP、命中规则、策略和最终节点。先确认启用配置及旧分流资源是否抢先匹配。
+
+需要补域名或改去向时，记录到独立扩展草稿并验证后再显式接入；不要改动原版基础。已命中正确代理仍失败时，检查节点、DNS、出口或 UDP。不能仅凭网页能开、图片失败就断言一定缺规则。

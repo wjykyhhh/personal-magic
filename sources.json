@@ -1,43 +1,276 @@
 {
+  "schema_version": 2,
   "repository": "blackmatrix7/ios_rule_script",
   "branch": "master",
   "license": "GPL-2.0",
+  "scope": "selected native rule files for five categories; not the entire upstream repository",
+  "categories": [
+    "OpenAI",
+    "Twitter",
+    "Telegram",
+    "Global",
+    "China"
+  ],
   "max_change_ratio": 0.2,
-  "skip_types": {
-    "DOMAIN-KEYWORD": "避免宽泛关键词误匹配",
-    "IP-ASN": "避免把整个共享网络归为某个 App",
-    "PROCESS-NAME": "iOS 三客户端通用域名/IP规则不使用进程匹配"
-  },
-  "sources": [
+  "files": [
     {
-      "name": "OpenAI",
+      "path": "rule/QuantumultX/OpenAI/OpenAI.list",
+      "client": "QuantumultX",
+      "category": "OpenAI",
+      "format": "qx",
+      "role": "base"
+    },
+    {
+      "path": "rule/QuantumultX/OpenAI/README.md",
+      "client": "QuantumultX",
+      "category": "OpenAI",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
+      "path": "rule/QuantumultX/Twitter/README.md",
+      "client": "QuantumultX",
+      "category": "Twitter",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
+      "path": "rule/QuantumultX/Twitter/Twitter.list",
+      "client": "QuantumultX",
+      "category": "Twitter",
+      "format": "qx",
+      "role": "base"
+    },
+    {
+      "path": "rule/QuantumultX/Telegram/README.md",
+      "client": "QuantumultX",
+      "category": "Telegram",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
+      "path": "rule/QuantumultX/Telegram/Telegram.list",
+      "client": "QuantumultX",
+      "category": "Telegram",
+      "format": "qx",
+      "role": "base"
+    },
+    {
+      "path": "rule/QuantumultX/Global/Global.list",
+      "client": "QuantumultX",
+      "category": "Global",
+      "format": "qx",
+      "role": "base"
+    },
+    {
+      "path": "rule/QuantumultX/Global/README.md",
+      "client": "QuantumultX",
+      "category": "Global",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
+      "path": "rule/QuantumultX/China/China.list",
+      "client": "QuantumultX",
+      "category": "China",
+      "format": "qx",
+      "role": "base"
+    },
+    {
+      "path": "rule/QuantumultX/China/README.md",
+      "client": "QuantumultX",
+      "category": "China",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
+      "path": "rule/Shadowrocket/OpenAI/OpenAI.list",
+      "client": "Shadowrocket",
+      "category": "OpenAI",
+      "format": "rule-set",
+      "role": "base"
+    },
+    {
+      "path": "rule/Shadowrocket/OpenAI/README.md",
+      "client": "Shadowrocket",
+      "category": "OpenAI",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
+      "path": "rule/Shadowrocket/Twitter/README.md",
+      "client": "Shadowrocket",
+      "category": "Twitter",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
+      "path": "rule/Shadowrocket/Twitter/Twitter.list",
+      "client": "Shadowrocket",
+      "category": "Twitter",
+      "format": "rule-set",
+      "role": "base"
+    },
+    {
+      "path": "rule/Shadowrocket/Telegram/README.md",
+      "client": "Shadowrocket",
+      "category": "Telegram",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
+      "path": "rule/Shadowrocket/Telegram/Telegram.list",
+      "client": "Shadowrocket",
+      "category": "Telegram",
+      "format": "rule-set",
+      "role": "base"
+    },
+    {
+      "path": "rule/Shadowrocket/Global/Global.list",
+      "client": "Shadowrocket",
+      "category": "Global",
+      "format": "rule-set",
+      "role": "base"
+    },
+    {
+      "path": "rule/Shadowrocket/Global/Global_Domain.list",
+      "client": "Shadowrocket",
+      "category": "Global",
+      "format": "domain-set",
+      "role": "base"
+    },
+    {
+      "path": "rule/Shadowrocket/Global/README.md",
+      "client": "Shadowrocket",
+      "category": "Global",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
+      "path": "rule/Shadowrocket/China/China.list",
+      "client": "Shadowrocket",
+      "category": "China",
+      "format": "rule-set",
+      "role": "base"
+    },
+    {
+      "path": "rule/Shadowrocket/China/China_Domain.list",
+      "client": "Shadowrocket",
+      "category": "China",
+      "format": "domain-set",
+      "role": "base"
+    },
+    {
+      "path": "rule/Shadowrocket/China/README.md",
+      "client": "Shadowrocket",
+      "category": "China",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
       "path": "rule/Clash/OpenAI/OpenAI.list",
-      "policy": "PROXY",
-      "min_rules": 10
+      "client": "Clash",
+      "category": "OpenAI",
+      "format": "rule-set",
+      "role": "reference"
     },
     {
-      "name": "Twitter",
+      "path": "rule/Clash/OpenAI/OpenAI_No_Resolve.yaml",
+      "client": "Clash",
+      "category": "OpenAI",
+      "format": "classical",
+      "role": "base"
+    },
+    {
+      "path": "rule/Clash/OpenAI/README.md",
+      "client": "Clash",
+      "category": "OpenAI",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
+      "path": "rule/Clash/Twitter/README.md",
+      "client": "Clash",
+      "category": "Twitter",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
       "path": "rule/Clash/Twitter/Twitter.list",
-      "policy": "PROXY",
-      "min_rules": 10
+      "client": "Clash",
+      "category": "Twitter",
+      "format": "rule-set",
+      "role": "reference"
     },
     {
-      "name": "Telegram",
+      "path": "rule/Clash/Twitter/Twitter_No_Resolve.yaml",
+      "client": "Clash",
+      "category": "Twitter",
+      "format": "classical",
+      "role": "base"
+    },
+    {
+      "path": "rule/Clash/Telegram/README.md",
+      "client": "Clash",
+      "category": "Telegram",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
       "path": "rule/Clash/Telegram/Telegram.list",
-      "policy": "PROXY",
-      "min_rules": 10
+      "client": "Clash",
+      "category": "Telegram",
+      "format": "rule-set",
+      "role": "reference"
     },
     {
-      "name": "Global",
+      "path": "rule/Clash/Telegram/Telegram_No_Resolve.yaml",
+      "client": "Clash",
+      "category": "Telegram",
+      "format": "classical",
+      "role": "base"
+    },
+    {
       "path": "rule/Clash/Global/Global.list",
-      "policy": "PROXY",
-      "min_rules": 20000
+      "client": "Clash",
+      "category": "Global",
+      "format": "rule-set",
+      "role": "reference"
     },
     {
-      "name": "China",
+      "path": "rule/Clash/Global/Global_Classical_No_Resolve.yaml",
+      "client": "Clash",
+      "category": "Global",
+      "format": "classical",
+      "role": "base"
+    },
+    {
+      "path": "rule/Clash/Global/README.md",
+      "client": "Clash",
+      "category": "Global",
+      "format": "markdown",
+      "role": "reference"
+    },
+    {
       "path": "rule/Clash/China/China.list",
-      "policy": "DIRECT",
-      "min_rules": 2000
+      "client": "Clash",
+      "category": "China",
+      "format": "rule-set",
+      "role": "reference"
+    },
+    {
+      "path": "rule/Clash/China/China_Classical_No_Resolve.yaml",
+      "client": "Clash",
+      "category": "China",
+      "format": "classical",
+      "role": "base"
+    },
+    {
+      "path": "rule/Clash/China/README.md",
+      "client": "Clash",
+      "category": "China",
+      "format": "markdown",
+      "role": "reference"
     }
   ]
 }
