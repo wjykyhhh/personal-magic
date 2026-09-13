@@ -1,0 +1,214 @@
+[
+  {
+    "host": "feishu.cn",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "open.feishu.cn",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "feishu.net",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "sf3-cn.feishucdn.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "feishupkg.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.icbc.com.cn",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "ibsbjstar.ccb.com.cn",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.ccb.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.abchina.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.boc.cn",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.bankcomm.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.cmbchina.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "images.cmbimg.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.psbc.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.spdb.com.cn",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.cebbank.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.cib.com.cn",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.citicbank.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "bank.pingan.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.baidu.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.taobao.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "www.jd.com",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "localhost",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "printer.local",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "192.168.1.1",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "10.0.0.1",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "fd12::1",
+    "policy": "DIRECT"
+  },
+  {
+    "host": "chatgpt.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "chat.openai.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "api.openai.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "cdn.oaistatic.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "files.oaiusercontent.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "grok.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "api.x.ai",
+    "policy": "PROXY"
+  },
+  {
+    "host": "www.typeless.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "typeless-static.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "x.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "pbs.twimg.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "video.twimg.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "twvid.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "t.me",
+    "policy": "PROXY"
+  },
+  {
+    "host": "api.telegram.org",
+    "policy": "PROXY"
+  },
+  {
+    "host": "cdn-telegram.org",
+    "policy": "PROXY"
+  },
+  {
+    "host": "telegram-cdn.org",
+    "policy": "PROXY"
+  },
+  {
+    "host": "149.154.167.51",
+    "policy": "PROXY"
+  },
+  {
+    "host": "91.108.56.100",
+    "policy": "PROXY"
+  },
+  {
+    "host": "2001:b28:f23d::1",
+    "policy": "PROXY"
+  },
+  {
+    "host": "www.google.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "www.youtube.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "github.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "raw.githubusercontent.com",
+    "policy": "PROXY"
+  },
+  {
+    "host": "notfeishu.net.invalid",
+    "policy": null
+  },
+  {
+    "host": "evilopenai.com.invalid",
+    "policy": null
+  }
+]

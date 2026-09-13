@@ -1,0 +1,46 @@
+name: Publish stable
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: 'Full 40-character commit SHA on main; leave empty for latest main. Use an older source SHA to roll back.'
+        required: false
+        type: string
+      tested:
+        description: 'I reviewed this version and tested the apps I use.'
+        required: true
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: publish-stable
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: inputs.tested && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select a reviewed source commit on main
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "$SOURCE_SHA" ]]; then
+            [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Expected a full commit SHA'; exit 1; }
+            git merge-base --is-ancestor "$SOURCE_SHA" origin/main
+            git checkout --detach "$SOURCE_SHA"
+          fi
+      - run: python3 scripts/rules.py check
+      - run: python3 -m unittest discover -s tests -v
+      - name: Publish one checked tree to stable
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/publish.py

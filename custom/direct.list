@@ -1,0 +1,23 @@
+# 本文件优先于上游规则。仅填写规则，不填写策略。
+# 中国大陆飞书（不把整个字节跳动/CDN网络设为直连）
+DOMAIN-SUFFIX,feishu.cn
+DOMAIN-SUFFIX,feishu.net
+DOMAIN-SUFFIX,feishucdn.com
+DOMAIN-SUFFIX,feishupkg.com
+# 常用大陆银行主域名；不是所有银行 App 依赖域名的完整清单。
+DOMAIN-SUFFIX,icbc.com.cn
+DOMAIN-SUFFIX,ccb.com
+DOMAIN-SUFFIX,ccb.cn
+DOMAIN-SUFFIX,abchina.com
+DOMAIN-SUFFIX,abchina.com.cn
+DOMAIN-SUFFIX,boc.cn
+DOMAIN-SUFFIX,bankcomm.com
+DOMAIN-SUFFIX,cmbchina.com
+DOMAIN-SUFFIX,cmbchina.biz
+DOMAIN-SUFFIX,cmbimg.com
+DOMAIN-SUFFIX,psbc.com
+DOMAIN-SUFFIX,spdb.com.cn
+DOMAIN-SUFFIX,cebbank.com
+DOMAIN-SUFFIX,cib.com.cn
+DOMAIN-SUFFIX,citicbank.com
+DOMAIN-SUFFIX,bank.pingan.com

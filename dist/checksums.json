@@ -1,0 +1,16 @@
+{
+  "clash/china.yaml": "cea0511af080366f738701475e8859370e0189c0153d9149f4b427f8e3cef05d",
+  "clash/custom-direct.yaml": "112024690398689df18d7519c42d3c22646a76f50e62770ecfd0729bb062ff87",
+  "clash/custom-proxy.yaml": "05cc800a7dd103c822ed465d4fe36068349ce97eb611e69d5dcf2f381068dcf1",
+  "clash/global.yaml": "1f1277b75d58cd0d64a5c07f56f18541ebd42ac38541860884b8a100065332e0",
+  "clash/lan.yaml": "96432bcb3b18719cbf82fb03b1edf433942abae03cd37a3ac80deb8e13656115",
+  "clash/openai.yaml": "e6c1adf43cfa3e9d843044c79610050c3f0fc9ae98d5467a6d02afa5cc2e2640",
+  "clash/providers.yaml": "437aa16a07ff7ededbdae81ae78ad199eef57ad6c39638c5301c3618150a58c7",
+  "clash/rules.yaml": "0417c38b413a986ba2560b916d0e72f423a3b4f37f04039d7fd25b207f61d282",
+  "clash/telegram.yaml": "3e57f810298367bf9d4c2be2e0ca3a6fa1b84f6b0d75af5a49fc96d58c57a5ef",
+  "clash/twitter.yaml": "36a7017e47b689c6b38242acfe2068c27a93da13137b80ffa233a40c7acd7585",
+  "quantumultx/import.md": "e5262c56b2cc692877c3373be9c221744ff5474b987d5b4fe6ca572894a9e602",
+  "quantumultx/rules.list": "b1c9c3fbf60d711e8e919902aa4c214ac9b4d8ad588f62652223fc8d2bb292c3",
+  "report.json": "d46851525eccf784ef16d068dd5ff8a5df9d6b09397adbfdf809e3b26cd8b9fb",
+  "shadowrocket/personal-magic.conf": "0815d7a58b259f227c1d8767353d4345e3c1c13c5994652062af78d540fc19b1"
+}

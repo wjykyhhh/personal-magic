@@ -1,0 +1,43 @@
+{
+  "repository": "blackmatrix7/ios_rule_script",
+  "branch": "master",
+  "license": "GPL-2.0",
+  "max_change_ratio": 0.2,
+  "skip_types": {
+    "DOMAIN-KEYWORD": "避免宽泛关键词误匹配",
+    "IP-ASN": "避免把整个共享网络归为某个 App",
+    "PROCESS-NAME": "iOS 三客户端通用域名/IP规则不使用进程匹配"
+  },
+  "sources": [
+    {
+      "name": "OpenAI",
+      "path": "rule/Clash/OpenAI/OpenAI.list",
+      "policy": "PROXY",
+      "min_rules": 10
+    },
+    {
+      "name": "Twitter",
+      "path": "rule/Clash/Twitter/Twitter.list",
+      "policy": "PROXY",
+      "min_rules": 10
+    },
+    {
+      "name": "Telegram",
+      "path": "rule/Clash/Telegram/Telegram.list",
+      "policy": "PROXY",
+      "min_rules": 10
+    },
+    {
+      "name": "Global",
+      "path": "rule/Clash/Global/Global.list",
+      "policy": "PROXY",
+      "min_rules": 20000
+    },
+    {
+      "name": "China",
+      "path": "rule/Clash/China/China.list",
+      "policy": "DIRECT",
+      "min_rules": 2000
+    }
+  ]
+}

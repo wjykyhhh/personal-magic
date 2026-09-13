@@ -1,0 +1,54 @@
+name: Propose upstream update
+on:
+  schedule:
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: upstream-candidate
+  cancel-in-progress: false
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Download and check all snapshots before changing files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/sync.py
+      - run: python3 scripts/rules.py build
+      - run: python3 -m unittest discover -s tests -v
+      - name: Push candidate and open a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- upstream dist; then
+            echo 'Selected rules unchanged.'
+            exit 0
+          fi
+          upstream_sha=$(python3 -c 'import json; print(json.load(open("upstream/lock.json"))["commit"])')
+          branch="automation/upstream-${upstream_sha:0:12}"
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null; then
+            echo "A candidate branch already exists: $branch. Review it before creating another."
+            exit 0
+          fi
+          git switch -c "$branch"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add upstream dist
+          git commit -m "Update selected upstream rules to ${upstream_sha:0:12}"
+          git push origin "$branch"
+          if ! gh pr create --base main --head "$branch" --title "Update selected routing rules (${upstream_sha:0:12})" --body-file .update-report.md; then
+            echo "::error::Candidate saved, but PR creation failed. If Actions is not allowed to create PRs, enable that repository setting or open the comparison below."
+            echo "https://github.com/$GITHUB_REPOSITORY/compare/main...$branch" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          cat .update-report.md >> "$GITHUB_STEP_SUMMARY"

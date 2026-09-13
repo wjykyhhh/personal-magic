@@ -1,0 +1,23 @@
+# 自定义补充优先于上游。实际代理出口使用客户端选择的节点。
+# OpenAI / ChatGPT
+DOMAIN-SUFFIX,openai.com
+DOMAIN-SUFFIX,chatgpt.com
+DOMAIN-SUFFIX,oaistatic.com
+DOMAIN-SUFFIX,oaiusercontent.com
+# Grok
+DOMAIN-SUFFIX,grok.com
+DOMAIN-SUFFIX,x.ai
+# Typeless 官网及官网引用的静态资源域名；App 的额外依赖需结合连接日志补充。
+DOMAIN-SUFFIX,typeless.com
+DOMAIN-SUFFIX,typeless-static.com
+# X 图片、视频和主页
+DOMAIN-SUFFIX,x.com
+DOMAIN-SUFFIX,twitter.com
+DOMAIN-SUFFIX,twimg.com
+DOMAIN-SUFFIX,twvid.com
+DOMAIN-SUFFIX,t.co
+# Telegram 媒体域名；IP 网段来自上游 Telegram 分类。
+DOMAIN-SUFFIX,telegram.org
+DOMAIN-SUFFIX,telegram-cdn.org
+DOMAIN-SUFFIX,cdn-telegram.org
+DOMAIN-SUFFIX,t.me

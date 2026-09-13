@@ -1,0 +1,26 @@
+{
+  "repository": "blackmatrix7/ios_rule_script",
+  "commit": "0087bb74e91b335e17a79fd07a8514277f7d77b4",
+  "files": {
+    "OpenAI": {
+      "path": "rule/Clash/OpenAI/OpenAI.list",
+      "git_blob_sha": "506c9ec94dad225df23c05a50294d2c440c94dd3"
+    },
+    "Twitter": {
+      "path": "rule/Clash/Twitter/Twitter.list",
+      "git_blob_sha": "666db47acb004f886983ca3434c13709b9e1f242"
+    },
+    "Telegram": {
+      "path": "rule/Clash/Telegram/Telegram.list",
+      "git_blob_sha": "d02438efbaa8f6e10cb84361dc4eb63f9b21ae31"
+    },
+    "Global": {
+      "path": "rule/Clash/Global/Global.list",
+      "git_blob_sha": "7ca69900c701fef9ec14136f403cb829fb77d3d8"
+    },
+    "China": {
+      "path": "rule/Clash/China/China.list",
+      "git_blob_sha": "d1782d07444333936a01f07462e232310a34691c"
+    }
+  }
+}

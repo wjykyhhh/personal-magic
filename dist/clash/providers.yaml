@@ -1,0 +1,80 @@
+{
+  "rule-providers": {
+    "pm-lan": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/lan.yaml",
+      "path": "./ruleset/personal-magic/lan.yaml",
+      "interval": 86400
+    },
+    "pm-custom-direct": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/custom-direct.yaml",
+      "path": "./ruleset/personal-magic/custom-direct.yaml",
+      "interval": 86400
+    },
+    "pm-custom-proxy": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/custom-proxy.yaml",
+      "path": "./ruleset/personal-magic/custom-proxy.yaml",
+      "interval": 86400
+    },
+    "pm-openai": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/openai.yaml",
+      "path": "./ruleset/personal-magic/openai.yaml",
+      "interval": 86400
+    },
+    "pm-twitter": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/twitter.yaml",
+      "path": "./ruleset/personal-magic/twitter.yaml",
+      "interval": 86400
+    },
+    "pm-telegram": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/telegram.yaml",
+      "path": "./ruleset/personal-magic/telegram.yaml",
+      "interval": 86400
+    },
+    "pm-global": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/global.yaml",
+      "path": "./ruleset/personal-magic/global.yaml",
+      "interval": 86400
+    },
+    "pm-china": {
+      "type": "http",
+      "behavior": "classical",
+      "format": "yaml",
+      "url": "https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/china.yaml",
+      "path": "./ruleset/personal-magic/china.yaml",
+      "interval": 86400
+    }
+  },
+  "rules": [
+    "RULE-SET,pm-lan,DIRECT",
+    "RULE-SET,pm-custom-direct,DIRECT",
+    "RULE-SET,pm-custom-proxy,PROXY",
+    "RULE-SET,pm-openai,PROXY",
+    "RULE-SET,pm-twitter,PROXY",
+    "RULE-SET,pm-telegram,PROXY",
+    "RULE-SET,pm-global,PROXY",
+    "RULE-SET,pm-china,DIRECT",
+    "GEOIP,CN,DIRECT",
+    "MATCH,PROXY"
+  ]
+}
