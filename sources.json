@@ -3,7 +3,7 @@
   "repository": "blackmatrix7/ios_rule_script",
   "branch": "master",
   "license": "GPL-2.0",
-  "scope": "selected native rule files for five categories; not the entire upstream repository",
+  "scope": "complete rule/ directory mirrored; files below select adapter inputs only",
   "categories": [
     "OpenAI",
     "Twitter",
@@ -272,5 +272,9 @@
       "format": "markdown",
       "role": "reference"
     }
-  ]
+  ],
+  "mirror": {
+    "path": "rule",
+    "mode": "complete"
+  }
 }

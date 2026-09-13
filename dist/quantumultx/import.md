@@ -28,3 +28,5 @@ final,proxy
 `geoip` / `final` 是本项目的兜底选择，属于接入配置，不属于上游原始规则。客户端本地规则及其他资源仍可能影响实际匹配。
 
 自定义飞书、银行、Grok、Typeless 等补充当前未启用；实际覆盖以这五组原版文件为准。仓库不自动同步上游；资源每 24 小时只检查已发布的 stable，亦可手工刷新。
+
+仓库基础已保存上游完整规则库：[Quantumult X 全分类](https://github.com/wjykyhhh/personal-magic/tree/stable/upstream/blackmatrix7/rule/QuantumultX)。本页仅是选用五组的接入方案，其他分类已完整保存，可按需另行添加并设置策略；不应把所有分类强制绑定到同一策略。

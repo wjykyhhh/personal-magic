@@ -10,13 +10,13 @@ concurrency:
 jobs:
   propose:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           ref: main
           fetch-depth: 0
-      - name: Download and check all snapshots before changing files
+      - name: Mirror and verify the complete upstream rule tree
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/sync.py
@@ -29,7 +29,7 @@ jobs:
         run: |
           set -euo pipefail
           if git diff --quiet -- upstream dist; then
-            echo 'Selected rules unchanged.'
+            echo 'Complete rule library unchanged.'
             exit 0
           fi
           upstream_sha=$(python3 -c 'import json; print(json.load(open("upstream/lock.json"))["commit"])')
@@ -42,9 +42,9 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add upstream dist
-          git commit -m "Update selected upstream rules to ${upstream_sha:0:12}"
+          git commit -m "Update complete upstream rule library to ${upstream_sha:0:12}"
           git push origin "$branch"
-          if ! gh pr create --base main --head "$branch" --title "Update selected routing rules (${upstream_sha:0:12})" --body-file .update-report.md; then
+          if ! gh pr create --base main --head "$branch" --title "Update complete rule library (${upstream_sha:0:12})" --body-file .update-report.md; then
             echo "::error::Candidate saved, but PR creation failed. If Actions is not allowed to create PRs, enable that repository setting or open the comparison below."
             echo "https://github.com/$GITHUB_REPOSITORY/compare/main...$branch" >> "$GITHUB_STEP_SUMMARY"
             exit 1

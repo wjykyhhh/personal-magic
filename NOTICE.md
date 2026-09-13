@@ -1,11 +1,13 @@
 # 来源与修改说明
 
-上游：[blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script)，GNU GPL version 2。本仓库保留其 LICENSE。五组分类各客户端原生文件、配套来源 README 和 Clash `.list` 参考原文按固定 commit 保存于 `upstream/blackmatrix7/rule/`，完整路径与 Git blob 校验值见 `sources.json`、`upstream/lock.json`。
+上游：[blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script)，GNU GPL version 2。本仓库保留其 LICENSE。
 
-2026-09-13：将旧版过滤/去重/跨客户端转换流程替换为原生文件镜像。`dist/base/` 的每个文件与指定版本的对应上游文件逐字节相同，不改规则类型、选项、策略名、重复项、顺序或注释。该范围是五个选中分类的指定格式，不是整个上游仓库。
+2026-09-13：将此前选取五组规则的快照扩展为上游完整 `rule/` 目录，保存全部客户端、分类、格式变体及 README。精确上游提交和目录 Git tree SHA 记录在 `upstream/lock.json`；逐文件大小、模式和 blob 校验值也一并记录。没有删减、去重、改写或跨客户端转换基础原文。
 
-personal-magic 自行提供客户端接入配置（类别绑定、先后顺序、DNS 及兜底）、下载验证/构建/发布程序、说明及扩展草稿。它们均不应被称为上游原作者提供的完整配置。旧自定义规则保留在 `custom/`，当前基础不会加载它们。过去版本中的过滤及转换只存在于 Git 历史。
+完整规则库保存在 `upstream/blackmatrix7/rule/`，其中来源说明和链接也保持原文。上游其他顶层目录（如复写、脚本和图标）不属于本次分流规则库镜像。
 
-客户端接入参考：[Quantumult X 官方配置](https://github.com/crossutility/Quantumult-X/blob/master/sample.conf)、[QX URL scheme](https://github.com/crossutility/Quantumult-X/blob/master/url-scheme.md)、[Mihomo 规则集](https://wiki.metacubex.one/config/rule-providers/)。Shadowrocket 组合方式依照本仓库保留的上游各分类 README。
+本项目自行提供接入配置、类别选择、策略绑定、顺序、DNS 和兜底，以及完整快照验证、维护、发布程序和个人扩展草稿。这些外围配置不能称为上游作者提供的整份配置。`custom/` 当前未启用。
 
-本项目维护代码、接入配置与扩展草稿同样按 GPL-2.0 提供。上游作者未对本项目配置或实际联网效果作出背书，具体许可条款以 LICENSE 为准。
+客户端接入参考：[Quantumult X 配置](https://github.com/crossutility/Quantumult-X/blob/master/sample.conf)、[QX URL scheme](https://github.com/crossutility/Quantumult-X/blob/master/url-scheme.md)、[Mihomo 规则集](https://wiki.metacubex.one/config/rule-providers/)。
+
+新增代码、接入配置与扩展同样以 GPL-2.0 提供。上游作者未对本项目配置或联网效果作出背书，具体条款以 LICENSE 为准。

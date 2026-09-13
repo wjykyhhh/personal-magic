@@ -7,6 +7,7 @@ from pathlib import Path, PurePosixPath
 import re
 import sys
 from urllib.parse import quote
+from library import verify_library
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = "wjykyhhh/personal-magic"
@@ -67,13 +68,18 @@ def load_base(root=ROOT):
     lock = json.loads((root / "upstream/lock.json").read_text())
     if lock["repository"] != UPSTREAM or not re.fullmatch(r"[0-9a-f]{40}", lock["commit"]):
         raise ValueError("invalid upstream lock")
-    expected = {item["path"] for item in cfg["files"]}
+    selected = {item["path"] for item in cfg["files"]}
+    if cfg.get("mirror") != {"path": "rule", "mode": "complete"}:
+        raise ValueError("full upstream rule-library mirror must be enabled")
+    library = verify_library(root, lock)
+    expected = set(lock["files"])
     actual = {str(p.relative_to(root / "upstream/blackmatrix7"))
               for p in (root / "upstream/blackmatrix7").rglob("*") if p.is_file()}
-    if set(lock["files"]) != expected or actual != expected:
-        raise ValueError("snapshot/manifest file set differs from sources.json")
+    if not selected <= expected or actual != expected:
+        raise ValueError("snapshot/manifest file set differs or adapter input is missing")
     contents = {}
-    report = {"mode": "native-upstream-base", "scope": "selected categories, not entire upstream repository",
+    report = {"mode": "complete-native-upstream-library", "scope": "complete rule/ directory, all clients and categories",
+              "library": library,
               "categories": cfg["categories"], "upstream_commit": lock["commit"],
               "extensions_enabled": False, "transformed_rules": 0, "files": {}}
     for item in cfg["files"]:
@@ -87,8 +93,8 @@ def load_base(root=ROOT):
         if item["role"] == "base":
             report["files"][path] = {"git_blob_sha": meta["git_blob_sha"], "bytes": len(data),
                                      "entries": len(rows), "output": "dist/" + output_path(item)}
-    report["rules_sha256"] = hashlib.sha256(dump(report["files"]).encode()).hexdigest()
-    report["verified_files"] = len(contents)
+    report["rules_sha256"] = hashlib.sha256(dump(lock["files"]).encode()).hexdigest()
+    report["verified_files"] = library["file_count"]
     report["base_files"] = len(report["files"])
     return cfg, contents, report
 
@@ -148,6 +154,8 @@ def render(root=ROOT):
 `geoip` / `final` 是本项目的兜底选择，属于接入配置，不属于上游原始规则。客户端本地规则及其他资源仍可能影响实际匹配。
 
 自定义飞书、银行、Grok、Typeless 等补充当前未启用；实际覆盖以这五组原版文件为准。仓库不自动同步上游；资源每 24 小时只检查已发布的 stable，亦可手工刷新。
+
+仓库基础已保存上游完整规则库：[Quantumult X 全分类](https://github.com/{REPO}/tree/stable/upstream/blackmatrix7/rule/QuantumultX)。本页仅是选用五组的接入方案，其他分类已完整保存，可按需另行添加并设置策略；不应把所有分类强制绑定到同一策略。
 """
     files["quantumultx/import.md"] = import_doc.encode()
     sr = header + """

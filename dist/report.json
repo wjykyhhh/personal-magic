@@ -1,6 +1,19 @@
 {
-  "mode": "native-upstream-base",
-  "scope": "selected categories, not entire upstream repository",
+  "mode": "complete-native-upstream-library",
+  "scope": "complete rule/ directory, all clients and categories",
+  "library": {
+    "rule_tree_sha": "ed757c41f280ef6fff02f23ca9e3cd6449df6429",
+    "file_count": 8841,
+    "bytes": 510190641,
+    "client_files": {
+      "AdGuard": 13,
+      "Clash": 2884,
+      "Loon": 1507,
+      "QuantumultX": 1376,
+      "Shadowrocket": 1504,
+      "Surge": 1557
+    }
+  },
   "categories": [
     "OpenAI",
     "Twitter",
@@ -115,8 +128,8 @@
       "output": "dist/base/Clash/China/China_Classical_No_Resolve.yaml"
     }
   },
-  "rules_sha256": "0fa75472484f70571edc589f9230b3934732fee7b061336e04b385b209a38bdb",
-  "verified_files": 37,
+  "rules_sha256": "195c13d18c907ebfc4fdb913a2bd40f5c62e1d63476bda4e0f823931c53e5b71",
+  "verified_files": 8841,
   "base_files": 17,
   "adapter_policies": {
     "category_order": [

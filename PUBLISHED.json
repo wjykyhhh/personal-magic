@@ -1,15 +1,28 @@
 {
-  "source_commit": "ce403b0c290bae00fb481a1bb65ee35303406ed3",
-  "published_at": "2026-09-13T15:20:28.309108+00:00",
+  "source_commit": "ac9be12a8a71eaa9007bf723fd04abdfd8539a06",
+  "published_at": "2026-09-13T15:51:17.937Z",
   "upstream_commit": "0087bb74e91b335e17a79fd07a8514277f7d77b4",
-  "rules_sha256": "0fa75472484f70571edc589f9230b3934732fee7b061336e04b385b209a38bdb",
-  "previous_stable_commit": "7dc2441682e3fc21d05b103513c343a075d4b677",
-  "mode": "native-upstream-base",
+  "rules_sha256": "195c13d18c907ebfc4fdb913a2bd40f5c62e1d63476bda4e0f823931c53e5b71",
+  "previous_stable_commit": "a2911185f5f8c61e4aaf10f1a118ff76bb877d94",
+  "mode": "complete-native-upstream-library",
+  "library": {
+    "bytes": 510190641,
+    "client_files": {
+      "AdGuard": 13,
+      "Clash": 2884,
+      "Loon": 1507,
+      "QuantumultX": 1376,
+      "Shadowrocket": 1504,
+      "Surge": 1557
+    },
+    "file_count": 8841,
+    "rule_tree_sha": "ed757c41f280ef6fff02f23ca9e3cd6449df6429"
+  },
   "validation": {
-    "upstream_files_git_blob_verified": 37,
-    "byte_identical_native_resources": 17,
-    "local_tests_passed": 10,
-    "device_tested": false,
-    "cloud_test_result": "not used for this connector publication"
+    "rule_tree_matches_upstream": true,
+    "cloud_workflow_run": 34766681513,
+    "cloud_conclusion": "success",
+    "active_rule_files_unchanged": true,
+    "device_tested": false
   }
 }
