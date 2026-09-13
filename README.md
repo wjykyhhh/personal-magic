@@ -78,12 +78,12 @@ python3 -m unittest discover -s tests -v
 python3 scripts/rules.py match pbs.twimg.com
 ```
 
-每天约 **UTC 02:17 / 北京时间 10:17** 检查上游，GitHub 调度可能延迟。更新先形成候选 PR，**不会自动合并或发布**。具体操作、试用和回退见 [维护说明](docs/maintenance.md)。
+**上游更新仅在需要时手动发起，已关闭每日定时检查。** 在 Actions 中运行 `Propose upstream update`，或在本地运行 `python3 scripts/sync.py`，即可检查上游；通过检查的更新再审核、试用和发布。具体操作和回退见 [维护说明](docs/maintenance.md)。
 
 ## 检查能覆盖什么
 
 - 严格解析、文件总数核对、空响应/HTML 错误拦截、快照完整性检查。
-- 相对当前快照，任一分类新增或删除超过 20% 时停止自动更新。
+- 相对当前快照，任一分类新增或删除超过 20% 时中止本次上游更新。
 - 关键域名/IP 的预期策略检查，以及 QX、Shadowrocket、Clash 输出的交叉校验。
 - 生成结果必须与源文件一致，检查未通过不发布。
 
