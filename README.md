@@ -1,51 +1,60 @@
 # personal-magic
 
-以 blackmatrix7 的原版分流规则作为固定基础，未来的个人扩展单独维护。
+**完整复制 blackmatrix7 的 `rule/` 规则库作为原版基础，未来的个人扩展单独维护。**
 
-**当前基础范围：OpenAI、Twitter、Telegram、Global、China 五组，各自使用上游 Quantumult X、Shadowrocket、Clash 原生文件。不是整个上游仓库的全量镜像。**
+固定版本：`0087bb74e91b335e17a79fd07a8514277f7d77b4`。包含全部客户端、全部分类、全部格式变体和目录内 README，共 **8,841 个文件**。原文、文件名、目录结构、顺序、重复项、规则类型及选项全部保留。整个目录的 Git tree SHA 与上游相同：`ed757c41f280ef6fff02f23ca9e3cd6449df6429`。
 
-基础规则与 `upstream/lock.json` 指定的同一个上游 commit **逐字节一致**：保留注释、规则类型、顺序、重复项和原有选项；不再过滤关键词/ASN/进程规则，不做跨客户端转换。上游给不同客户端提供的内容本来可能不同，因此不承诺三个客户端的规则数量或实际行为完全相同。
+这里的完整规则库指上游 `rule/` 目录；复写、脚本、图标等属于上游其他功能目录。它们不影响本次分流规则库的完整性。
 
-## 安装及旧版迁移
+## 完整基础目录
 
-日常订阅 `stable`，编辑和审核使用 `main`。两个分支不会自动同步。
+| 客户端 | 稳定版原版目录 | 文件数（含说明和格式变体） |
+| --- | --- | ---: |
+| Quantumult X | [全部分类](https://github.com/wjykyhhh/personal-magic/tree/stable/upstream/blackmatrix7/rule/QuantumultX) | 1,376 |
+| Shadowrocket | [全部分类](https://github.com/wjykyhhh/personal-magic/tree/stable/upstream/blackmatrix7/rule/Shadowrocket) | 1,504 |
+| Clash / Mihomo | [全部分类](https://github.com/wjykyhhh/personal-magic/tree/stable/upstream/blackmatrix7/rule/Clash) | 2,884 |
+| Surge | [全部分类](https://github.com/wjykyhhh/personal-magic/tree/stable/upstream/blackmatrix7/rule/Surge) | 1,557 |
+| Loon | [全部分类](https://github.com/wjykyhhh/personal-magic/tree/stable/upstream/blackmatrix7/rule/Loon) | 1,507 |
+| AdGuard | [全部分类](https://github.com/wjykyhhh/personal-magic/tree/stable/upstream/blackmatrix7/rule/AdGuard) | 13 |
 
-| 客户端 | 稳定版入口 | 使用方式 |
-| --- | --- | --- |
-| Quantumult X | [一键添加与手工配置说明](https://github.com/wjykyhhh/personal-magic/blob/stable/dist/quantumultx/import.md) | 添加五个原版分流资源，按说明设置策略绑定和本地兜底 |
-| Shadowrocket | [配置订阅](https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/shadowrocket/personal-magic.conf) | 配置页添加/更新后选用，首页使用“配置”路由模式 |
-| Clash / Mihomo | [配置片段](https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/providers.yaml) | 合并 `rule-providers` 和 `rules`，将 `PROXY` 绑定到现有代理组 |
+基础原文位于 `upstream/blackmatrix7/rule/`。所有文件都可以通过本仓库 Raw 地址读取，例如：
 
-**QX 用户需迁移一次：停用旧的 `personal-magic` 混合分流资源，使用上述入口添加五个原版资源。旧 `dist/quantumultx/rules.list` 已撤下，客户端可能保留旧缓存，单纯刷新旧地址不能完成迁移。** 保留已有节点订阅。添加链接只追加分流资源，不会替你删除旧规则，也不会修改 `[filter_local]` 的兜底。
+```text
+https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/upstream/blackmatrix7/rule/QuantumultX/OpenAI/OpenAI.list
+```
 
-QX 原版文件含 `OpenAI` 等类别策略名；导入说明通过资源的 `force-policy` 将前四组绑定到 `proxy`，China 绑定到 `direct`。这与旧混合资源的设置方式不同。检查本地规则和其他分流资源，避免抢先匹配。
+选中客户端和分类后，保持上游剩余路径不变，使用本仓库前缀。原始 README 中的上游链接也原样保留，因此直接点击那些链接会访问上游；订阅本项目固定版本时请使用本项目的 Raw 地址。
 
-Shadowrocket 的配置入口保持原地址，内部改为引用原生 RULE-SET，并为 Global、China 同时引用上游配套 DOMAIN-SET。更新配置后也要刷新远程规则集。当前沿用原有 DoH/DNS/IPv6 设置；这些是本项目的配置选择，不属于上游规则文件。
+精确版本和逐文件校验值见 [upstream/lock.json](upstream/lock.json)，全库验证统计见 [dist/report.json](dist/report.json)。本说明中的数字对应上述初始完整快照；以后手动更新后的状态以清单和报告为准。
 
-Clash 使用完整的原生 classical YAML（带上游 `no-resolve` 的版本）。`providers.yaml` 与 `rules.yaml` 现在均包含 `rule-providers` 和 `rules` 两部分，均为合并片段。原有五组 `dist/clash/<category>.yaml` 地址也已换成逐字节相同的原版。旧 LAN、自定义直连、自定义代理 provider 已撤下，迁移时请更新整个片段。
+## 当前客户端接入方案
 
-节点继续在客户端管理；本仓库仅保存公开规则、接入配置和维护程序。
+**完整保存规则库，与手机启用哪些规则，是两件分别配置的事。** 仓库已保存全部分类；当前接入方案仍选用 OpenAI、Twitter、Telegram、Global、China 五组，没有将所有分类一起启用。分类之间可能重复，并且直连、代理、拦截的策略不同，新增时需要明确策略和顺序。
 
-## 原版基础与扩展的边界
+| 客户端 | 接入入口 |
+| --- | --- |
+| Quantumult X | [五组资源的一键添加及手工说明](https://github.com/wjykyhhh/personal-magic/blob/stable/dist/quantumultx/import.md) |
+| Shadowrocket | [配置订阅](https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/shadowrocket/personal-magic.conf) |
+| Clash / Mihomo | [合并配置片段](https://raw.githubusercontent.com/wjykyhhh/personal-magic/stable/dist/clash/providers.yaml) |
 
-| 位置 | 用途 | 是否修改上游规则 |
-| --- | --- | --- |
-| `upstream/blackmatrix7/rule/` | 原生文件和对应 README 快照 | 否，按 Git blob 校验 |
-| `upstream/lock.json` | 精确上游版本、文件大小和 Git blob SHA | 记录来源 |
-| `dist/base/` | 可订阅的 17 个原生规则文件 | 否，逐字节复制 |
-| `routing.json` | 类别顺序、直连/代理绑定与兜底 | 仅配置引用方式 |
-| `dist/quantumultx/`、`dist/shadowrocket/`、Clash 配置片段 | 客户端接入说明/配置 | 本项目生成，不能称为上游整份配置 |
-| `custom/` | 早期个人规则和未来扩展草稿 | **目前不读取、不启用** |
+这些接入配置的策略绑定、顺序、DNS 和兜底由本项目设置，不是上游提供的整份配置。五组对应的 17 个原生文件在 `dist/base/` 保留兼容订阅地址，仍与完整基础内的原文件逐字节一致。
 
-保留 37 个上游文件：17 个用于订阅的原生规则文件、15 份类别 README、5 份 Clash `.list` 参考原文。Clash 选择上游 `*_No_Resolve.yaml`，Global/China 选择完整的 `*_Classical_No_Resolve.yaml`；没有镜像同一分类的全部格式变体。具体路径见 [sources.json](sources.json)。
+如果已经迁移到这五组原生订阅，本次补齐完整库不用重新导入。更早的单个 QX 混合资源 `dist/quantumultx/rules.list` 已停用，需要按上面的 QX 说明迁移一次。已有节点继续在客户端管理。
 
-接入配置顺序是 OpenAI → Twitter → Telegram → Global → China，前四组代理、China 直连，最后中国 GeoIP 直连、其余代理。这些是我们绑定类别的选择，上游本身不是一个完整配置。基础文件不会因规则相互重叠而删行。
+## 以后怎么扩展和更新
 
-之前补充的飞书、银行、Grok、Typeless 和局域网规则保留在 `custom/`，目前均未加入订阅；实际覆盖以五组上游原文为准。未来扩展生成独立资源，明确启用和优先级，保持基础原文件不变。详见 [扩展说明](custom/README.md)。
+| 位置 | 职责 |
+| --- | --- |
+| `upstream/blackmatrix7/rule/` | 上游完整原版基础，保持整目录一致 |
+| `upstream/lock.json` | 上游提交、整目录 Git tree SHA、每个文件的大小/模式/哈希 |
+| `custom/` | 个人扩展草稿，当前未启用；未来独立生成和接入 |
+| `sources.json` 的 `files` | 当前接入方案选用的输入文件，**不限制全库同步范围** |
+| `routing.json` | 当前方案的类别顺序和策略绑定 |
+| `dist/` | 当前方案的订阅文件、说明和验证报告 |
 
-## 维护与校验
+以后补域名或调整某个服务的去向，写独立扩展并显式设置优先级，保持原版基础不变。之前的飞书、银行、Grok、Typeless 等个人补充仍放在 `custom/`，目前不读入基础订阅。
 
-**没有定时同步上游。** 更新只在需要时手动运行：
+**没有定时更新。** 需要升级基础时手动运行 Actions 的 `Propose upstream update`，或执行：
 
 ```sh
 python3 scripts/sync.py
@@ -53,21 +62,10 @@ python3 scripts/rules.py check
 python3 -m unittest discover -s tests -v
 ```
 
-也可手动运行 Actions 的 `Propose upstream update`。更新先进入候选，审核后再单独发布 `stable`。客户端每 24 小时检查已发布内容，与仓库主动更新上游是两回事；手工刷新订阅不会触发同步。
+同步程序每次完整复制同一个上游提交的 `rule/`，核对整个 Git tree，先生成候选再人工发布 stable。未知分类和格式也原样保存，不靠类型白名单决定是否收入基础。详细发布与回退流程见 [维护说明](docs/maintenance.md)。
 
-构建、校验原版基础与接入配置：
+本地/云端检查验证文件完整性和接入配置，不代表手机实际联网已测试。节点、DNS、地区限制和客户端版本仍会影响实际使用。
 
-```sh
-python3 scripts/rules.py build
-python3 scripts/rules.py check
-```
+## 来源与许可
 
-修改 `custom/` 不会影响当前生成结果。更新程序对下载内容核对上游 Git blob/大小，在完整批次通过后才写入；任一规则文件条目增删超过 20% 时停止，留待审查。此阈值不会删减规则或改写内容。
-
-[构建报告](dist/report.json) 记录原版校验值和路径。检查包括原文到发布文件的一致性、配套文件齐全、扩展隔离、失败下载不污染快照。**这些是离线校验，尚未替代手机实测**，无法保证节点、DNS、登录风控或某条帖子的媒体可用。
-
-试用、固定版本、发布和回退见 [维护说明](docs/maintenance.md)。
-
-## 上游与许可
-
-来源：[blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script)。固定版本见 [upstream/lock.json](upstream/lock.json)，原始来源说明随各分类 README 一并保留。GPL-2.0，详见 [LICENSE](LICENSE) 与 [NOTICE](NOTICE.md)。
+[blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script)，GPL-2.0。保留上游许可证和全部规则目录内的来源说明；本项目代码及扩展同样按 GPL-2.0 提供。见 [LICENSE](LICENSE)、[NOTICE](NOTICE.md)。
