@@ -97,13 +97,17 @@ class RuleTests(unittest.TestCase):
     def test_large_upstream_deletion_is_rejected(self):
         text = (ROOT / "upstream/blackmatrix7/OpenAI.list").read_text()
         lines = text.splitlines()
+        cfg = json.loads((ROOT / "sources.json").read_text())
+        accepted, _ = rules.parse(text, cfg["skip_types"], require_total=True)
+        remove_count = len(accepted) // 3 + 1
         removed = 0
         kept = []
         for line in lines:
-            if line.startswith("DOMAIN-SUFFIX,") and removed < 10:
+            if line.split(",")[0] in rules.SUPPORTED and removed < remove_count:
                 removed += 1
             else:
-                kept.append(line.replace("# TOTAL: 35", "# TOTAL: 25"))
+                kept.append(line)
+        kept = [f"# TOTAL: {int(line.split(':')[1]) - removed}" if line.startswith("# TOTAL:") else line for line in kept]
         responses = [json.dumps({"object": {"sha": "b" * 40}}).encode(), ("\n".join(kept) + "\n").encode()]
         with patch.object(sync, "fetch", side_effect=responses):
             with self.assertRaisesRegex(ValueError, "unusually large change"):
